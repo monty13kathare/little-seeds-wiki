@@ -103,178 +103,254 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen lg:h-screen w-screen flex flex-col lg:flex-row bg-background font-inter text-muted-foreground overflow-y-auto lg:overflow-hidden">
-
-      {/* Left panel (Little Seeds Branding & Value Pillars) */}
-      <div className="hidden lg:flex lg:w-1/2 xl:w-[50%] lg:h-full relative flex-col items-center justify-end pb-12 px-16 overflow-hidden border-r border-border/20 bg-background">
-        {/* Top Solid Sage Green Block */}
-        <div className="absolute top-0 inset-x-0 h-[40%] bg-[#619289] flex items-end justify-center">
-          {/* Curvy white/card divider wave matching the mobile mockup */}
-          <svg 
-            viewBox="0 0 1440 200" 
-            className="absolute bottom-0 w-full h-[100px] fill-background translate-y-px"
-            preserveAspectRatio="none"
-          >
-            <path d="M0,96 C360,250 820,-30 1440,96 L1440,200 L0,200 Z"></path>
-          </svg>
-        </div>
-
-        {/* Logo positioned mathematically on the exact wave line boundary */}
-        <div 
-          className="absolute top-[32%] left-1/2 z-10 flex justify-center"
-          style={{ transform: 'translate(-50%, -50%)' }}
-        >
-          <div className="w-28 h-28 bg-white rounded-3xl flex items-center justify-center shadow-2xl border border-[#619289]/15 p-4.5 overflow-hidden transition-transform duration-300 hover:scale-105">
-            <img src="/ls-image.png" className="w-full h-full object-contain" alt="Little Seeds Logo" />
-          </div>
-        </div>
-
-        {/* Bottom content section (placed perfectly below the wave in the bottom half) */}
-        <div className="relative z-10 max-w-md text-center space-y-6 w-full">
-          <div className="space-y-1.5">
-            <h1 className="text-3xl font-extrabold tracking-wider text-foreground font-outfit uppercase">
-              Little Seeds Portal
-            </h1>
-            <p className="text-muted-foreground text-xs font-bold leading-relaxed max-w-xs mx-auto">
-              Systematic project documentation manuals for developers, admin teams, and client viewers.
-            </p>
-          </div>
-
-          {/* Quick Pillars */}
-          <div className="grid grid-cols-1 gap-2.5 text-left">
-            {[
-              { emoji: '🔑', title: 'Admin Documentation Manager', desc: 'Log in as Little Seeds Admin to easily create, edit, rename or delete document structures.' },
-              { emoji: '📖', title: 'Client Project Portal', desc: 'Clients get dedicated access to their project docs with a clean, focused reading experience.' },
-            ].map(f => (
-              <div key={f.title} className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-card border border-border/40 backdrop-blur-xs transition-colors duration-300 hover:border-[#619289]/30">
-                <span className="text-lg shrink-0">{f.emoji}</span>
-                <div>
-                  <p className="text-[10px] font-black text-foreground uppercase tracking-wide">{f.title}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed font-medium">{f.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/60">Little Seeds Portal Workspace v1.4</p>
-        </div>
+    <div className="min-h-screen w-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800 font-inter text-foreground overflow-y-auto">
+      
+      {/* Animated Background Gradient Orbs */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full blur-3xl animate-pulse" style={{ background: 'linear-gradient(to bottom right, var(--accent-primary), transparent)', opacity: 0.1 }}></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full blur-3xl animate-pulse" style={{ background: 'linear-gradient(to top right, var(--accent-primary), transparent)', opacity: 0.05, animationDelay: '2s' }}></div>
       </div>
 
-      {/* Right panel (Interactive Auth Form) */}
-      <div className="flex-1 flex flex-col items-center justify-center p-6 lg:p-12 relative overflow-y-auto">
-        <div className="w-full max-w-md space-y-8 py-8">
-
-          {/* Mobile view logo - only visible on small screens */}
-          <div className="flex flex-col items-center lg:hidden space-y-4 text-center">
-            <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center shadow-lg border border-[#619289]/10 p-3.5 overflow-hidden">
-              <img src="/ls-image.png" className="w-full h-full object-contain" alt="Little Seeds Logo" />
-            </div>
-            <div className="space-y-1">
-              <h2 className="text-xl font-extrabold text-foreground font-outfit uppercase tracking-wider">
-                Little Seeds Portal
-              </h2>
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Rooted in Faith</p>
-            </div>
-          </div>
-
-          <div className="space-y-2 text-center lg:text-left">
-            <h2 className="text-2xl font-black text-foreground font-outfit uppercase tracking-wider">
-              Portal Sign In
-            </h2>
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Enter your credentials to access your workspace.</p>
-          </div>
-
-          {/* Form */}
-          <form onSubmit={handleLoginSubmit} className="space-y-4">
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Email Address</label>
-              <div className={cn(
-                'flex items-center gap-3 h-12 px-4 rounded-full border bg-background transition-all',
-                focused === 'email' ? 'border-[#619289] ring-3 ring-[#619289]/10' : 'border-border/50'
-              )}>
-                <Mail className="w-4 h-4 text-muted-foreground shrink-0" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  onFocus={() => setFocused('email')}
-                  onBlur={() => setFocused(null)}
-                  placeholder="name@littleseeds.com"
-                  className="flex-1 bg-transparent text-xs font-bold outline-none placeholder:text-muted-foreground/50 text-foreground"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Password</label>
-              <div className={cn(
-                'flex items-center gap-3 h-12 px-4 rounded-full border bg-background transition-all',
-                focused === 'password' ? 'border-[#619289] ring-3 ring-[#619289]/10' : 'border-border/50'
-              )}>
-                <Lock className="w-4 h-4 text-muted-foreground shrink-0" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  onFocus={() => setFocused('password')}
-                  onBlur={() => setFocused(null)}
-                  className="flex-1 bg-transparent text-xs font-bold outline-none placeholder:text-muted-foreground/50 text-foreground"
-                />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-muted-foreground hover:text-[#619289] transition-colors">
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full h-12 bg-[#619289] text-white font-black text-xs uppercase tracking-wider rounded-full flex items-center justify-center gap-2.5 shadow-lg shadow-[#619289]/10 hover:bg-[#507c74] transition-all disabled:opacity-60 disabled:cursor-not-allowed mt-4 cursor-pointer"
+      {/* Main Container */}
+      <div className="relative w-full min-h-screen flex flex-col lg:flex-row items-center justify-center lg:gap-0">
+        
+        {/* Left Panel - Branding (Desktop Only) */}
+        <motion.div 
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+          className="hidden lg:flex lg:w-1/2 h-screen flex-col items-center justify-center px-8 xl:px-16 relative"
+        >
+          {/* Decorative gradient background */}
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom right, var(--accent-primary), transparent)', opacity: 0.05 }}></div>
+          
+          <div className="relative z-10 max-w-lg text-center space-y-12">
+            {/* Large Logo */}
+            <motion.div 
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: 'spring', stiffness: 200 }}
+              className="flex justify-center"
             >
-              {isLoading ? (
-                <>
-                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Authenticating Session…
-                </>
-              ) : (
-                <>Sign In <ArrowRight className="w-4 h-4" /></>
-              )}
-            </button>
-          </form>
+              <div className="relative">
+                <div className="absolute inset-0 rounded-[4rem] blur-3xl" style={{ background: 'linear-gradient(to bottom right, var(--accent-primary), transparent)', opacity: 0.2 }}></div>
+                <div className="relative w-48 h-48 bg-gradient-to-br from-white to-slate-50 rounded-[3rem] flex items-center justify-center shadow-2xl border-2 p-6 overflow-hidden" style={{ borderColor: 'var(--accent-primary)', borderOpacity: 0.1 }}>
+                  <img src="/ls-image.png" className="w-full h-full object-contain" alt="Little Seeds Logo" />
+                </div>
+              </div>
+            </motion.div>
 
-          {/* Footer Security & Registration option */}
-          <div className="space-y-4 pt-2">
-            <div className="flex items-center justify-center gap-2 text-[10px] font-black text-muted-foreground uppercase tracking-widest">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#619289]" />
-              <span>Secure Cryptographic Access</span>
+            {/* Branding Text */}
+            <div className="space-y-4">
+              <h1 className="text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent font-outfit" style={{ backgroundImage: 'linear-gradient(to right, var(--accent-primary), var(--accent-primary))' }}>
+                Little Seeds
+              </h1>
+              <p className="text-sm md:text-base font-semibold uppercase tracking-wider" style={{ color: 'var(--accent-primary)' }}>
+                Rooted in Faith
+              </p>
+              <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed max-w-md mx-auto">
+                Comprehensive documentation platform for all Little Seeds project users, teams, and administrators.
+              </p>
             </div>
           </div>
+        </motion.div>
 
-        </div>
+        {/* Right Panel - Login Form */}
+        <motion.div 
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+          className="w-full lg:w-1/2 h-auto lg:h-screen flex flex-col items-center justify-center p-6 sm:p-8 md:p-12"
+        >
+          <div className="w-full max-w-md space-y-8">
+            
+            {/* Mobile Logo - Only on Small Screens */}
+            <motion.div 
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.4 }}
+              className="flex lg:hidden flex-col items-center space-y-6 text-center mb-8"
+            >
+              <div className="relative">
+                <div className="absolute inset-0 rounded-3xl blur-2xl" style={{ background: 'linear-gradient(to bottom right, var(--accent-primary), transparent)', opacity: 0.2 }}></div>
+                <div className="relative w-32 h-32 bg-gradient-to-br from-white to-slate-50 rounded-3xl flex items-center justify-center shadow-xl border-2 p-4 overflow-hidden" style={{ borderColor: 'var(--accent-primary)', borderOpacity: 0.1 }}>
+                  <img src="/ls-image.png" className="w-full h-full object-contain" alt="Little Seeds Logo" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <h1 className="text-3xl font-extrabold bg-clip-text text-transparent font-outfit" style={{ backgroundImage: 'linear-gradient(to right, var(--accent-primary), var(--accent-primary))' }}>
+                  Little Seeds
+                </h1>
+                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Rooted in Faith</p>
+              </div>
+            </motion.div>
+
+            {/* Header */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.4 }}
+              className="space-y-2 text-center lg:text-left"
+            >
+              <h2 className="text-3xl md:text-4xl font-extrabold text-foreground font-outfit">
+                Welcome Back
+              </h2>
+              <p className="text-sm md:text-base text-slate-600 dark:text-slate-400">Enter your credentials to access your workspace.</p>
+            </motion.div>
+
+            {/* Login Form */}
+            <motion.form 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
+              onSubmit={handleLoginSubmit} 
+              className="space-y-5"
+            >
+              {/* Email Input */}
+              <div className="space-y-2">
+                <label className="text-xs md:text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wide">Email Address</label>
+                <div className={cn(
+                  'flex items-center gap-3 h-12 md:h-14 px-4 md:px-5 rounded-2xl border-2 bg-white dark:bg-slate-900 transition-all duration-300 group',
+                  focused === 'email' 
+                    ? 'shadow-lg' 
+                    : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
+                )}
+                style={{
+                  borderColor: focused === 'email' ? 'var(--accent-primary)' : undefined,
+                  boxShadow: focused === 'email' ? `0 10px 15px -3px var(--accent-primary, #507c74) / 0.2` : undefined
+                }}>
+                  <Mail className={cn(
+                    'w-5 h-5 shrink-0 transition-colors duration-300'
+                  )}
+                  style={{ color: focused === 'email' ? 'var(--accent-primary)' : '#9ca3af' }} />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    onFocus={() => setFocused('email')}
+                    onBlur={() => setFocused(null)}
+                    placeholder="name@littleseeds.com"
+                    className="flex-1 bg-transparent text-sm md:text-base font-medium outline-none placeholder:text-slate-400 dark:placeholder:text-slate-600 text-foreground"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Password Input */}
+              <div className="space-y-2">
+                <label className="text-xs md:text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wide">Password</label>
+                <div className={cn(
+                  'flex items-center gap-3 h-12 md:h-14 px-4 md:px-5 rounded-2xl border-2 bg-white dark:bg-slate-900 transition-all duration-300 group',
+                  focused === 'password' 
+                    ? 'shadow-lg' 
+                    : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
+                )}
+                style={{
+                  borderColor: focused === 'password' ? 'var(--accent-primary)' : undefined,
+                  boxShadow: focused === 'password' ? `0 10px 15px -3px var(--accent-primary, #507c74) / 0.2` : undefined
+                }}>
+                  <Lock className={cn(
+                    'w-5 h-5 shrink-0 transition-colors duration-300'
+                  )}
+                  style={{ color: focused === 'password' ? 'var(--accent-primary)' : '#9ca3af' }} />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    onFocus={() => setFocused('password')}
+                    onBlur={() => setFocused(null)}
+                    className="flex-1 bg-transparent text-sm md:text-base font-medium outline-none placeholder:text-slate-400 dark:placeholder:text-slate-600 text-foreground"
+                  />
+                  <motion.button 
+                    type="button" 
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShowPassword(!showPassword)} 
+                    className={cn(
+                      'p-2 rounded-lg transition-all duration-300'
+                    )}
+                    style={{
+                      color: focused === 'password' ? 'var(--accent-primary)' : undefined,
+                      backgroundColor: focused === 'password' ? 'var(--accent-primary, #507c74)' : 'transparent',
+                      opacity: focused === 'password' ? 0.1 : 1
+                    }}
+                  >
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </motion.button>
+                </div>
+              </div>
+
+              {/* Sign In Button */}
+              <motion.button
+                type="submit"
+                disabled={isLoading}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full h-12 md:h-14 text-white font-bold text-sm md:text-base uppercase tracking-wider rounded-2xl flex items-center justify-center gap-2 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed mt-2 cursor-pointer"
+                style={{
+                  background: 'var(--accent-primary, #507c74)',
+                  boxShadow: '0 10px 15px -3px var(--accent-primary, #507c74) / 0.3'
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 20px 25px -5px var(--accent-primary, #507c74) / 0.4'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 10px 15px -3px var(--accent-primary, #507c74) / 0.3'; }}
+              >
+                {isLoading ? (
+                  <>
+                    <motion.span 
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                      className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                    />
+                    Authenticating…
+                  </>
+                ) : (
+                  <>
+                    Sign In
+                    <motion.div whileHover={{ x: 4 }} transition={{ type: 'spring', stiffness: 200 }}>
+                      <ArrowRight className="w-5 h-5" />
+                    </motion.div>
+                  </>
+                )}
+              </motion.button>
+            </motion.form>
+
+            {/* Security Badge */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+              className="flex items-center justify-center gap-2 p-3 rounded-xl bg-white/50 dark:bg-slate-800/50"
+            >
+              <ShieldCheck className="w-4 h-4" style={{ color: 'var(--accent-primary, #507c74)' }} />
+              <span className="text-xs md:text-sm font-semibold text-slate-600 dark:text-slate-400">Secure Cryptographic Access</span>
+            </motion.div>
+
+          </div>
+        </motion.div>
       </div>
 
       {/* Toast Alert */}
       <AnimatePresence>
         {toastMessage && (
           <motion.div
-            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            initial={{ opacity: 0, y: -30, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="fixed top-6 right-6 z-50 flex items-center gap-3 p-4 rounded-xl bg-rose-950/80 border border-rose-500/30 backdrop-blur-md shadow-2xl max-w-sm"
+            exit={{ opacity: 0, y: -30, scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+            className="fixed top-6 right-6 z-50 flex items-center gap-3 p-4 md:p-5 rounded-2xl bg-gradient-to-br from-rose-950/90 to-rose-900/80 border border-rose-500/30 backdrop-blur-md shadow-2xl max-w-sm"
           >
-            <AlertCircle className="w-5 h-5 text-rose-400 shrink-0" />
-            <div className="flex-1 text-xs font-bold text-rose-100">
+            <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 animate-pulse" />
+            <div className="flex-1 text-xs md:text-sm font-semibold text-rose-100">
               {toastMessage}
             </div>
-            <button
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setToastMessage(null)}
-              className="text-rose-400 hover:text-rose-200 p-0.5 rounded-lg transition-colors cursor-pointer"
+              className="text-rose-400 hover:text-rose-200 p-1 rounded-lg transition-colors cursor-pointer"
             >
-              <X className="w-4 h-4" />
-            </button>
+              <X className="w-5 h-5" />
+            </motion.button>
           </motion.div>
         )}
       </AnimatePresence>

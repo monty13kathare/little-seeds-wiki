@@ -96,49 +96,7 @@ export default function DashboardPage() {
 
   return (
     <div className="p-6 md:p-8 space-y-10 max-w-7xl mx-auto font-inter text-slate-700 dark:text-slate-300">
-      
-      {/* State-of-the-Art Dynamic Hero banner */}
-      <div className="relative overflow-hidden rounded-3xl p-8 md:p-12 shadow-2xl bg-linear-to-r from-primary/10 via-primary/5 to-transparent border border-primary/20 backdrop-blur-xs">
-        <div className="relative z-10 max-w-3xl space-y-5">
-          <Badge className="bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 px-3 py-1 font-bold rounded-xl text-[10px] uppercase tracking-wider select-none">
-            <Sparkles className="w-3.5 h-3.5 mr-1" /> ACTIVE ROLE: {isAdmin ? 'Little Seeds Admin' : 'Client Reader'}
-          </Badge>
-          <h1 className="text-3xl md:text-5xl font-black tracking-tight font-outfit uppercase text-slate-900 dark:text-slate-50">
-            Little Seeds Docs Portal
-          </h1>
-          <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 font-medium leading-relaxed max-w-2xl">
-            Welcome back, <span className="font-extrabold text-slate-900 dark:text-white">{user?.name}</span>. Explore systematic, module-wise onboarding flows, developer APIs, and operational guidelines optimized for your custom access profile.
-          </p>
-          <div className="flex flex-wrap gap-4 pt-2">
-            {isAdmin ? (
-              <Button onClick={() => {
-                const doc = documents[0];
-                if (doc) handleOpenDoc(doc.id);
-              }} className="bg-primary hover:bg-primary/90 text-primary-foreground font-black px-6 h-11 rounded-xl transition-all shadow-lg shadow-primary/20 cursor-pointer">
-                Launch Writer Desk
-              </Button>
-            ) : (
-              <Button onClick={() => {
-                if (recentDocs[0]) handleOpenDoc(recentDocs[0].id);
-              }} className="bg-primary hover:bg-primary/90 text-primary-foreground font-black px-6 h-11 rounded-xl transition-all shadow-lg shadow-primary/20 cursor-pointer">
-                Explore Guides
-              </Button>
-            )}
-            <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-900 border border-border/40 rounded-xl px-4 py-2">
-              <Compass className="w-4 h-4 text-primary" />
-              <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
-                Platform Status: <span className="text-emerald-500 dark:text-emerald-400 font-black">Online & Secure</span>
-              </span>
-            </div>
-          </div>
-        </div>
-        
-        {/* Background Gradients */}
-        <div className="absolute -right-20 -top-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute right-10 bottom-0 w-64 h-64 bg-primary/5 rounded-full blur-2xl" />
-      </div>
 
-      {/* Database Directory Stats Grid */}
       <div className="space-y-4">
         <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 select-none">
           Documentation Analytics
@@ -343,26 +301,6 @@ export default function DashboardPage() {
                 )}
               </CardContent>
             </Card>
-          </div>
-
-          {/* Quick-Login simulation desktop notice card */}
-          <div className="space-y-4">
-            <h2 className="text-sm font-black flex items-center gap-2 text-slate-900 dark:text-slate-200 uppercase tracking-widest font-outfit text-left">
-              <ShieldAlert className="w-4 h-4 text-amber-500 shrink-0 animate-bounce" /> Simulator Quick desk
-            </h2>
-            <div className="p-6 rounded-2xl bg-amber-500/5 border border-amber-500/20 text-slate-600 dark:text-slate-350 text-xs leading-relaxed relative group overflow-hidden text-left">
-              <div className="absolute -right-4 -top-4 w-12 h-12 bg-amber-500/10 rounded-full group-hover:scale-150 transition-transform duration-500" />
-              <p className="font-black text-amber-500 mb-2.5 uppercase tracking-widest text-[9px]">Little Seeds System simulation Notice</p>
-              <p className="font-semibold text-xs leading-relaxed">
-                To test the permissions layout, sign out and sign in using the <span className="font-extrabold text-slate-800 dark:text-slate-200">"Quick-Login Simulator Desk"</span> on the login screen! Select the Little Seeds Administrator to create, edit, and delete documents, or select any of the specific Client Reader accounts to view their strictly authorized document manuals and flat, beautiful reader links!
-              </p>
-              <div className="mt-5 flex items-center gap-2">
-                <div className="w-6 h-6 rounded-full bg-amber-500 text-slate-900 flex items-center justify-center font-black text-[8px]">
-                  LS
-                </div>
-                <span className="text-[9px] font-bold text-amber-500/60">Little Seeds Admin Service</span>
-              </div>
-            </div>
           </div>
 
         </div>
