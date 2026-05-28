@@ -1,9 +1,9 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  FileText, 
-  Activity, 
+import {
+  FileText,
+  Activity,
   BookOpen,
   Code as Code2,
   ChevronRight,
@@ -43,9 +43,9 @@ export default function DashboardPage() {
   };
 
   const allowedCategories = getAuthorizedCategories();
-  
-  const allowedDocs = documents.filter(d => 
-    (project ? d.projectId === project.id : true) && 
+
+  const allowedDocs = documents.filter(d =>
+    (project ? d.projectId === project.id : true) &&
     allowedCategories.includes(d.category) &&
     (isAdmin ? true : d.status === 'published')
   );
@@ -56,7 +56,7 @@ export default function DashboardPage() {
   const totalDocsCount = allowedDocs.length;
   const publishedDocsCount = allowedDocs.filter(d => d.status === 'published' || !d.status).length;
   const draftDocsCount = allowedDocs.filter(d => d.status === 'draft').length;
-  
+
   const allSections = project?.sections || [];
   const totalSectionsCount = allSections.length;
 
@@ -126,10 +126,10 @@ export default function DashboardPage() {
 
       {/* Main Dashboard Interactive Layout Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+
         {/* Left/Main Column: Pinned & Recent Docs (Span 2) */}
         <div className="lg:col-span-2 space-y-8">
-          
+
           {/* Section: Pinned Documents */}
           {pinnedDocs.length > 0 && (
             <div className="space-y-5">
@@ -139,11 +139,11 @@ export default function DashboardPage() {
                 </h2>
                 <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Quick access to important manuals</p>
               </div>
-              
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {pinnedDocs.map(doc => (
-                  <div 
-                    key={doc.id} 
+                  <div
+                    key={doc.id}
                     onClick={() => handleOpenDoc(doc.id)}
                     className="bg-card border border-border/40 hover:border-primary/50 transition-all rounded-xl p-4 cursor-pointer group shadow-xs hover:shadow-md text-left flex items-start gap-3 relative overflow-hidden"
                   >
@@ -185,11 +185,11 @@ export default function DashboardPage() {
               </h2>
               <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Latest updates across the platform</p>
             </div>
-            
+
             <div className="bg-card border border-border/30 rounded-2xl overflow-hidden shadow-xs">
               {recentDocs.map((doc, i) => (
-                <div 
-                  key={doc.id} 
+                <div
+                  key={doc.id}
                   onClick={() => handleOpenDoc(doc.id)}
                   className={cn(
                     "flex items-center justify-between p-4 hover:bg-slate-100 dark:hover:bg-slate-900/30 transition-all group cursor-pointer text-left",
@@ -246,7 +246,7 @@ export default function DashboardPage() {
 
         {/* Right Column: Section Directory insights & Sim Panel (Span 1) */}
         <div className="space-y-8">
-          
+
           {/* Section Directory insights card */}
           <div className="space-y-4">
             <h2 className="text-sm font-black flex items-center gap-2 text-slate-900 dark:text-slate-200 uppercase tracking-widest font-outfit text-left">
@@ -259,18 +259,18 @@ export default function DashboardPage() {
               <CardContent className="space-y-5">
                 {sectionMetrics.map((c) => {
                   const Icon = c.id === 'teacher' ? GraduationCap
-                             : c.id === 'admin' ? ShieldAlert
-                             : c.id === 'student' ? Backpack
-                             : c.id === 'developer' ? Code2
-                             : c.icon === 'Users2' ? Users2
-                             : c.icon === 'Briefcase' ? Briefcase
-                             : BookOpen;
+                    : c.id === 'admin' ? ShieldAlert
+                      : c.id === 'student' ? Backpack
+                        : c.id === 'developer' ? Code2
+                          : c.icon === 'Users2' ? Users2
+                            : c.icon === 'Briefcase' ? Briefcase
+                              : BookOpen;
 
                   const color = c.id === 'teacher' ? 'text-primary'
-                              : c.id === 'admin' ? 'text-purple-400'
-                              : c.id === 'student' ? 'text-amber-400'
-                              : c.id === 'developer' ? 'text-sky-400'
-                              : 'text-primary';
+                    : c.id === 'admin' ? 'text-purple-400'
+                      : c.id === 'student' ? 'text-amber-400'
+                        : c.id === 'developer' ? 'text-sky-400'
+                          : 'text-primary';
 
                   return (
                     <div key={c.id} className="space-y-1.5">
@@ -282,13 +282,13 @@ export default function DashboardPage() {
                         <span className="text-slate-400 font-black shrink-0">{c.count} docs</span>
                       </div>
                       <div className="w-full bg-slate-100 dark:bg-slate-900 h-2 rounded-full overflow-hidden border border-border/20">
-                        <div 
-                           className={cn(
+                        <div
+                          className={cn(
                             "h-full rounded-full transition-all duration-300",
                             c.id === 'teacher' ? "bg-primary" :
-                            c.id === 'admin' ? "bg-purple-500" :
-                            c.id === 'student' ? "bg-amber-500" :
-                            c.id === 'developer' ? "bg-sky-500" : "bg-primary"
+                              c.id === 'admin' ? "bg-purple-500" :
+                                c.id === 'student' ? "bg-amber-500" :
+                                  c.id === 'developer' ? "bg-sky-500" : "bg-primary"
                           )}
                           style={{ width: `${c.percentage}%` }}
                         />

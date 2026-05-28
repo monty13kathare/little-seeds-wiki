@@ -104,7 +104,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen w-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800 font-inter text-foreground overflow-y-auto">
-      
+
       {/* Animated Background Gradient Orbs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full blur-3xl animate-pulse" style={{ background: 'linear-gradient(to bottom right, var(--accent-primary), transparent)', opacity: 0.1 }}></div>
@@ -113,9 +113,9 @@ export default function LoginPage() {
 
       {/* Main Container */}
       <div className="relative w-full min-h-screen flex flex-col lg:flex-row items-center justify-center lg:gap-0">
-        
+
         {/* Left Panel - Branding (Desktop Only) */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
@@ -123,10 +123,10 @@ export default function LoginPage() {
         >
           {/* Decorative gradient background */}
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom right, var(--accent-primary), transparent)', opacity: 0.05 }}></div>
-          
+
           <div className="relative z-10 max-w-lg text-center space-y-12">
             {/* Large Logo */}
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               transition={{ type: 'spring', stiffness: 200 }}
               className="flex justify-center"
@@ -155,16 +155,16 @@ export default function LoginPage() {
         </motion.div>
 
         {/* Right Panel - Login Form */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
           className="w-full lg:w-1/2 h-auto lg:h-screen flex flex-col items-center justify-center p-6 sm:p-8 md:p-12"
         >
           <div className="w-full max-w-md space-y-8">
-            
+
             {/* Mobile Logo - Only on Small Screens */}
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.4 }}
@@ -185,7 +185,7 @@ export default function LoginPage() {
             </motion.div>
 
             {/* Header */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.4 }}
@@ -198,11 +198,11 @@ export default function LoginPage() {
             </motion.div>
 
             {/* Login Form */}
-            <motion.form 
+            <motion.form
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.4 }}
-              onSubmit={handleLoginSubmit} 
+              onSubmit={handleLoginSubmit}
               className="space-y-5"
             >
               {/* Email Input */}
@@ -210,18 +210,18 @@ export default function LoginPage() {
                 <label className="text-xs md:text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wide">Email Address</label>
                 <div className={cn(
                   'flex items-center gap-3 h-12 md:h-14 px-4 md:px-5 rounded-2xl border-2 bg-white dark:bg-slate-900 transition-all duration-300 group',
-                  focused === 'email' 
-                    ? 'shadow-lg' 
+                  focused === 'email'
+                    ? 'shadow-lg'
                     : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
                 )}
-                style={{
-                  borderColor: focused === 'email' ? 'var(--accent-primary)' : undefined,
-                  boxShadow: focused === 'email' ? `0 10px 15px -3px var(--accent-primary, #507c74) / 0.2` : undefined
-                }}>
+                  style={{
+                    borderColor: focused === 'email' ? 'var(--accent-primary)' : undefined,
+                    boxShadow: focused === 'email' ? `0 10px 15px -3px var(--accent-primary, #507c74) / 0.2` : undefined
+                  }}>
                   <Mail className={cn(
                     'w-5 h-5 shrink-0 transition-colors duration-300'
                   )}
-                  style={{ color: focused === 'email' ? 'var(--accent-primary)' : '#9ca3af' }} />
+                    style={{ color: focused === 'email' ? 'var(--accent-primary)' : '#9ca3af' }} />
                   <input
                     type="email"
                     value={email}
@@ -240,18 +240,18 @@ export default function LoginPage() {
                 <label className="text-xs md:text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wide">Password</label>
                 <div className={cn(
                   'flex items-center gap-3 h-12 md:h-14 px-4 md:px-5 rounded-2xl border-2 bg-white dark:bg-slate-900 transition-all duration-300 group',
-                  focused === 'password' 
-                    ? 'shadow-lg' 
+                  focused === 'password'
+                    ? 'shadow-lg'
                     : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
                 )}
-                style={{
-                  borderColor: focused === 'password' ? 'var(--accent-primary)' : undefined,
-                  boxShadow: focused === 'password' ? `0 10px 15px -3px var(--accent-primary, #507c74) / 0.2` : undefined
-                }}>
+                  style={{
+                    borderColor: focused === 'password' ? 'var(--accent-primary)' : undefined,
+                    boxShadow: focused === 'password' ? `0 10px 15px -3px var(--accent-primary, #507c74) / 0.2` : undefined
+                  }}>
                   <Lock className={cn(
                     'w-5 h-5 shrink-0 transition-colors duration-300'
                   )}
-                  style={{ color: focused === 'password' ? 'var(--accent-primary)' : '#9ca3af' }} />
+                    style={{ color: focused === 'password' ? 'var(--accent-primary)' : '#9ca3af' }} />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={password}
@@ -261,11 +261,11 @@ export default function LoginPage() {
                     onBlur={() => setFocused(null)}
                     className="flex-1 bg-transparent text-sm md:text-base font-medium outline-none placeholder:text-slate-400 dark:placeholder:text-slate-600 text-foreground"
                   />
-                  <motion.button 
-                    type="button" 
+                  <motion.button
+                    type="button"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => setShowPassword(!showPassword)} 
+                    onClick={() => setShowPassword(!showPassword)}
                     className={cn(
                       'p-2 rounded-lg transition-all duration-300'
                     )}
@@ -296,7 +296,7 @@ export default function LoginPage() {
               >
                 {isLoading ? (
                   <>
-                    <motion.span 
+                    <motion.span
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity }}
                       className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
@@ -315,7 +315,7 @@ export default function LoginPage() {
             </motion.form>
 
             {/* Security Badge */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.4 }}
