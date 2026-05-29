@@ -34,6 +34,26 @@ export function jsonToMarkdown(json: string): string {
         case 'horizontalRule':
           markdown += '---\n\n';
           break;
+        case 'table':
+          if (node.content) {
+            node.content.forEach((row: any, rowIndex: number) => {
+              let rowMarkdown = '| ';
+              row.content?.forEach((cell: any) => {
+                const cellText = cell.content?.[0]?.content?.map((n: any) => n.text).join('') || '';
+                rowMarkdown += `${cellText} | `;
+              });
+              markdown += rowMarkdown.trim() + '\n';
+              
+              if (rowIndex === 0) {
+                // Add separator after header
+                let sep = '|';
+                row.content?.forEach(() => { sep += '---|'; });
+                markdown += sep + '\n';
+              }
+            });
+            markdown += '\n';
+          }
+          break;
       }
     };
 
@@ -88,6 +108,38 @@ export function markdownToJSON(markdown: string): string {
         i++;
       }
       content.push({ type: 'bulletList', content: listItems });
+      continue;
+    } else if (line.startsWith('|')) {
+      const tableRows: any[] = [];
+      let isFirstRow = true;
+      while (i < lines.length && lines[i].trim().startsWith('|')) {
+        const tableLine = lines[i].trim();
+        
+        // Skip alignment/separator row
+        if (tableLine.match(/^\|[\s\-:|]+\|$/) && tableLine.includes('-')) {
+          i++;
+          isFirstRow = false;
+          continue;
+        }
+
+        const cells = tableLine.split('|').slice(1, -1).map(c => c.trim());
+        const rowContent = cells.map(cellText => ({
+          type: isFirstRow ? 'tableHeader' : 'tableCell',
+          content: [{
+            type: 'paragraph',
+            content: cellText ? [{ type: 'text', text: cellText }] : []
+          }]
+        }));
+
+        tableRows.push({
+          type: 'tableRow',
+          content: rowContent
+        });
+        
+        isFirstRow = false;
+        i++;
+      }
+      content.push({ type: 'table', content: tableRows });
       continue;
     } else if (line === '---') {
       content.push({ type: 'horizontalRule' });
