@@ -3,13 +3,13 @@
 import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { 
-  LuArrowLeft as ArrowLeft, LuSave as Save, 
-  LuClock as ClockIcon, LuTag as Tag,
-  LuPrinter as Printer, LuCheck as Check, LuFileText as FileText, 
-  LuInfo as Info, LuBookOpen as BookOpen, LuUser as User2, LuCalendar as Calendar, LuHash as Hash,
-  LuX as X, LuCompass as Compass, LuShieldCheck as ShieldCheck, LuMenu as Menu,
-  LuType as Type, LuEye as Eye, LuChevronRight as ChevronRight
-} from 'react-icons/lu';
+  ArrowLeft, Save, 
+  Clock as ClockIcon, Tag,
+  Printer, Check, FileText, 
+  Info, BookOpen, User as User2, Calendar, Hash,
+  X, Compass, ShieldCheck, Menu,
+  Type, Eye, ChevronRight
+} from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -243,9 +243,9 @@ export default function DocumentPage() {
   const project = projects.find(p => p.id === doc?.projectId);
   const sections = project?.sections || [];
 
-  // Lock Client Viewers strictly to Read-Only mode (matches Next.js Docs exactly)
-  const isAdmin = user?.role === 'SUPER_ADMIN' || user?.role === 'ADMIN' || user?.role === 'admin';
-  const isReadOnly = !isAdmin;
+  // Force Read-Only mode on the public docs page so admins can preview exactly what clients see
+  const isAdmin = false; // Override admin status to simulate client view perfectly
+  const isReadOnly = true;
 
   useEffect(() => {
     if (doc) {

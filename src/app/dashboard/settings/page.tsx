@@ -143,7 +143,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto py-12 px-6 lg:px-8 space-y-8 text-foreground">
+    <div className="max-w-3xl mx-auto py-8 sm:py-12 px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 text-foreground w-full">
       
       {/* Back Button & Header */}
       <div className="space-y-4">
@@ -155,45 +155,13 @@ export default function SettingsPage() {
           Back to Dashboard
         </button>
         <div className="space-y-2">
-          <h1 className="text-3xl font-black tracking-tight font-outfit uppercase">Account & Settings</h1>
-          <p className="text-sm text-muted-foreground">Manage your public identity, application preferences, and security access.</p>
+          <h1 className="text-3xl font-black tracking-tight font-outfit uppercase">My Profile</h1>
+          <p className="text-sm text-muted-foreground">Manage your public identity and contact details.</p>
         </div>
       </div>
 
-      {/* Main Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        
-        {/* Navigation Sidebar */}
-        <div className="md:col-span-1 space-y-2">
-          {[
-            { id: 'profile', label: 'My Profile', icon: User },
-            { id: 'preferences', label: 'Preferences', icon: SettingsIcon },
-            { id: 'security', label: 'Security & Access', icon: Shield },
-            { id: 'favorites', label: 'Favorite Manuals', icon: Star },
-          ].map(tab => {
-            const Icon = tab.icon;
-            const active = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as Tab)}
-                className={cn(
-                  "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider text-left transition-all cursor-pointer border",
-                  active 
-                    ? "bg-primary/10 border-primary/25 text-primary" 
-                    : "border-transparent text-muted-foreground hover:text-foreground hover:bg-accent/40"
-                )}
-              >
-                <Icon className={cn("w-4 h-4", active ? "text-primary" : "text-muted-foreground")} />
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Form Container */}
-        <div className="md:col-span-3">
-          <div className="bg-card border border-border p-8 rounded-3xl shadow-xl min-h-[400px]">
+        <div className="w-full">
+          <div className="bg-card border border-border p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-xl min-h-[400px]">
             <AnimatePresence mode="wait">
               {activeTab === 'profile' && (
                 <motion.form
@@ -217,8 +185,8 @@ export default function SettingsPage() {
                   {/* Banner & Avatar section */}
                   <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-sm">
                     <div className="h-24 w-full bg-linear-to-r from-primary/30 via-primary/10 to-transparent"></div>
-                    <div className="px-6 pb-6 flex flex-col sm:flex-row items-start sm:items-end gap-6 relative">
-                      <div className="w-24 h-24 rounded-full border-4 border-card overflow-hidden bg-accent shrink-0 -mt-12 shadow-lg relative z-10">
+                    <div className="px-4 sm:px-6 pb-4 sm:pb-6 flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6 relative">
+                      <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-card overflow-hidden bg-accent shrink-0 -mt-12 sm:-mt-14 shadow-lg relative z-10 mx-auto sm:mx-0">
                         {avatar ? (
                           <img src={avatar} alt="Avatar Preview" className="w-full h-full object-cover" />
                         ) : (
@@ -227,7 +195,7 @@ export default function SettingsPage() {
                           </div>
                         )}
                       </div>
-                      <div className="flex-1 w-full space-y-1.5 pt-2 sm:pt-0">
+                      <div className="flex-1 w-full space-y-1.5 pt-2 sm:pt-0 text-left">
                         <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Avatar URL</label>
                         <div className="relative">
                           <Link2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" />
@@ -694,7 +662,6 @@ export default function SettingsPage() {
             </AnimatePresence>
           </div>
         </div>
-      </div>
 
       {/* Toast Alert */}
       <AnimatePresence>

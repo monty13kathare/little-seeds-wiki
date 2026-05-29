@@ -133,12 +133,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   >
                     Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => router.push('/dashboard/settings')}
-                    className="cursor-pointer"
-                  >
-                    Settings
-                  </DropdownMenuItem>
+
                   <DropdownMenuSeparator className="bg-border" />
                   <DropdownMenuItem
                     onClick={() => {

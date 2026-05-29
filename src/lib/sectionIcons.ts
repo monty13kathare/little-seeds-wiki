@@ -6,7 +6,8 @@ import {
   Terminal, GitBranch, Database, Webhook, Bug, Briefcase, 
   BarChart2, DollarSign, TrendingUp, Target, HeartPulse, 
   Stethoscope, Pill, Activity, Palette, Image, Video, Mic, 
-  Package, Truck, MapPin, CalendarCheck, Bell, Workflow 
+  Package, Truck, MapPin, CalendarCheck, Bell, Workflow,
+  FileText, File, Files, Folder, FolderOpen, Library, Newspaper, Archive, BookCopy
 } from 'lucide-react';
 
 import {
@@ -86,6 +87,15 @@ export const SECTION_ICONS_MAP: Record<string, React.ComponentType<any>> = {
   CalendarCheck: CalendarCheck,
   Bell: Bell,
   Workflow: Workflow,
+  FileText,
+  File,
+  Files,
+  Folder,
+  FolderOpen,
+  Library,
+  Newspaper,
+  Archive,
+  BookCopy,
 
   // Fa6 (FontAwesome 6)
   FaGraduationCap,
@@ -156,6 +166,14 @@ export const SECTION_ICON_OPTIONS: SectionIconOption[] = [
   
   // ── Documentation & Guides ───────────────────────────────────────────
   { value: 'BookOpen',             label: 'Documentation (Lu)',       emoji: '📖' },
+  { value: 'FileText',             label: 'Text File (Lu)',           emoji: '📄' },
+  { value: 'Files',                label: 'Files (Lu)',               emoji: '📑' },
+  { value: 'Folder',               label: 'Folder (Lu)',              emoji: '📁' },
+  { value: 'FolderOpen',           label: 'Open Folder (Lu)',         emoji: '📂' },
+  { value: 'Library',              label: 'Library (Lu)',             emoji: '🏛️' },
+  { value: 'Archive',              label: 'Archive (Lu)',             emoji: '🗄️' },
+  { value: 'BookCopy',             label: 'Manual Copy (Lu)',         emoji: '📋' },
+  { value: 'Newspaper',            label: 'News/Article (Lu)',        emoji: '📰' },
   { value: 'FaBookOpen',           label: 'Manual (FontAwesome)',     emoji: '📚' },
   { value: 'HiOutlineBookOpen',    label: 'Guide (Heroicons)',        emoji: '📒' },
   { value: 'BsJournalText',        label: 'Journal (Bootstrap)',      emoji: '📓' },
@@ -189,10 +207,14 @@ export const SECTION_ICON_OPTIONS: SectionIconOption[] = [
 ];
 
 export const getSectionIconSelectOptions = () =>
-  SECTION_ICON_OPTIONS.map(opt => ({
-    value: opt.value,
-    label: `${opt.emoji}  ${opt.label}`,
-  }));
+  SECTION_ICON_OPTIONS.map(opt => {
+    const IconComponent = SECTION_ICONS_MAP[opt.value];
+    return {
+      value: opt.value,
+      label: opt.label.replace(/ \([^)]*\)/, ''),
+      icon: IconComponent ? React.createElement(IconComponent, { className: 'w-4 h-4 text-primary' }) : null,
+    };
+  });
 
 export function getSectionEmoji(iconValue: string): string {
   return SECTION_ICON_OPTIONS.find(o => o.value === iconValue)?.emoji ?? '📝';

@@ -48,16 +48,23 @@ export default function DocsPage() {
     );
   }
 
-  // Empty state if absolutely no published documents exist in the entire system
   return (
-    <div className="p-6 md:p-8 space-y-10 max-w-7xl mx-auto font-inter text-slate-700 dark:text-slate-300 h-full flex flex-col justify-center">
-      <div className="flex flex-col items-center justify-center py-32 text-center border border-dashed border-border/50 rounded-3xl mt-8 bg-card shadow-sm">
-        <div className="w-16 h-16 bg-muted rounded-2xl flex items-center justify-center mb-5 text-3xl shadow-inner">
-          🌱
+    <div className="p-4 sm:p-6 md:p-8 space-y-10 max-w-4xl mx-auto font-inter text-foreground flex flex-col justify-center min-h-[75vh]">
+      <div className="flex flex-col items-center justify-center py-20 sm:py-28 px-6 sm:px-12 text-center border border-dashed border-border/60 rounded-[2rem] bg-card shadow-2xl relative overflow-hidden group mx-4 sm:mx-0">
+        {/* Background ambient gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 opacity-60" />
+        
+        {/* Custom Logo Container */}
+        <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white border border-border/40 shadow-xl rounded-3xl flex items-center justify-center mb-6 sm:mb-8 overflow-hidden z-10 transition-transform group-hover:scale-105 duration-500">
+          <img src="/ls-image.png" alt="Little Seeds Docs" className="w-full h-full object-contain p-3" />
         </div>
-        <h2 className="text-xl font-black font-outfit uppercase tracking-wider text-slate-900 dark:text-slate-100">Welcome to Little Seeds Docs</h2>
-        <p className="text-sm text-muted-foreground font-medium mt-2 max-w-md mx-auto leading-relaxed">
-          The documentation portal is currently empty. To create an introduction or getting started guide, please sign in to the Admin Dashboard and publish a new manual.
+        
+        {/* Typography */}
+        <h2 className="text-3xl sm:text-5xl font-bold font-outfit tracking-tight text-foreground z-10">
+          Little Seeds Docs
+        </h2>
+        <p className="text-sm sm:text-base text-muted-foreground font-semibold mt-4 sm:mt-5 max-w-lg mx-auto leading-relaxed z-10">
+          The documentation portal is currently empty. To create an introduction or getting started guide, please sign in to the <span className="text-primary font-bold">Admin Dashboard</span> and publish a new manual.
         </p>
       </div>
     </div>

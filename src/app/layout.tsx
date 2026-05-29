@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import {
-  Inter,
-  Outfit,
+  DM_Sans,
+  Playfair_Display,
   Roboto,
   Montserrat,
   JetBrains_Mono,
@@ -9,13 +9,13 @@ import {
 import "./globals.css";
 import Providers from "@/components/shared/Providers";
 
-const inter = Inter({
-  variable: "--font-inter",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
 });
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
 });
 
@@ -49,7 +49,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const fontVariables = `${inter.variable} ${outfit.variable} ${roboto.variable} ${montserrat.variable} ${jetbrains.variable}`;
+  const fontVariables = `${dmSans.variable} ${playfair.variable} ${roboto.variable} ${montserrat.variable} ${jetbrains.variable}`;
 
   return (
     <html

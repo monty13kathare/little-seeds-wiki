@@ -112,7 +112,7 @@ export async function GET() {
     await Project.deleteMany({});
     await Document.deleteMany({});
 
-    // 2. Seed Little Seeds Project
+    // 2. Seed Little Seeds Project (Empty state for Modules)
     const littleSeedsProject = await Project.create({
       id: 'p1',
       name: 'Little Seeds',
@@ -121,25 +121,12 @@ export async function GET() {
       color: '#10b981',
       version: 'v1.4.2',
       category: 'Education Platform',
-      sections: [
-        { id: 'teacher', label: 'Teachers Manuals', icon: 'GraduationCap' },
-        { id: 'admin', label: 'Admin Portal Setup', icon: 'ShieldAlert' },
-        { id: 'student', label: 'Student & Parent Guides', icon: 'Backpack' },
-        { id: 'developer', label: 'Core Developer Specs', icon: 'Code' }
-      ]
+      sections: [] // Empty by default so admin can create their own modules
     });
 
-    // 3. Seed Documents for Little Seeds
-    await Document.create([
-      { id: 'd_teacher_1', parentId: null, projectId: 'p1', title: 'Classroom Layout & Setup Guidelines', content: TEACHER_LAYOUT, category: 'teacher', emoji: '🏫', tags: ['setup', 'classroom'], status: 'published', isPinned: true, isFavorite: false, wordCount: 145, authorName: 'Principal Seeds', authorAvatar: 'https://i.pravatar.cc/150?u=1', version: 1 },
-      { id: 'd_teacher_2', parentId: null, projectId: 'p1', title: 'Advanced Editor Features Showcase', content: EDITOR_SHOWCASE, category: 'teacher', emoji: '🎨', tags: ['showcase', 'editor'], status: 'published', isPinned: true, isFavorite: true, wordCount: 380, authorName: 'Little Seeds Support', authorAvatar: 'https://i.pravatar.cc/150?u=1', version: 1 },
-      { id: 'd_admin_1', parentId: null, projectId: 'p1', title: 'Admin Portal Setup Guide', content: ADMIN_PORTAL, category: 'admin', emoji: '🔑', tags: ['admin', 'portal'], status: 'published', isPinned: true, isFavorite: true, wordCount: 88, authorName: 'Support Team', authorAvatar: 'https://i.pravatar.cc/150?u=2', version: 1 },
-      { id: 'd_dev_1', parentId: null, projectId: 'p1', title: 'Core API Specifications', content: DEV_API, category: 'developer', emoji: '🔌', tags: ['api', 'developer'], status: 'published', isPinned: false, isFavorite: false, wordCount: 52, authorName: 'Lead Dev', authorAvatar: 'https://i.pravatar.cc/150?u=3', version: 2 },
-      { id: 'd_student_1', parentId: null, projectId: 'p1', title: 'Assignment Submission Guide', content: STUDENT_GUIDE, category: 'student', emoji: '🎒', tags: ['homework', 'student'], status: 'published', isPinned: false, isFavorite: true, wordCount: 78, authorName: 'Teacher Maple', authorAvatar: 'https://i.pravatar.cc/150?u=4', version: 1 }
-    ]);
-
-    return NextResponse.json({ success: true, message: 'Database reset and seeded successfully with Little Seeds project and manuals!' });
+    return NextResponse.json({ success: true, message: 'Database reset and seeded successfully with Little Seeds project. Modules are empty for admin to configure.' });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
+

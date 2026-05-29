@@ -29,7 +29,8 @@ import {
   Link2,
   AlertCircle,
   Send,
-  FileText
+  FileText,
+  Layout
 } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { cn, toSlug } from '@/lib/utils';
@@ -239,14 +240,20 @@ export default function Sidebar({
     },
   };
 
-  const handleNewDoc = async (category: ClientRole, parentId?: string) => {
+  const handleNewDoc = async (category: ClientRole, parentId?: string, shouldRoute: boolean = false) => {
     if (!activeProjectId) return;
     const doc = await createDocument(parentId || null, activeProjectId, category);
     setActiveDoc(doc.id);
     startRename(doc);
-    const proj = projects.find(p => p.id === activeProjectId);
-    const sectionLabel = proj?.sections?.find(s => s.id === category)?.label || category;
-    router.push(pathname.startsWith('/docs') ? `/docs/${toSlug(sectionLabel)}/${toSlug(doc.title)}` : `/dashboard/documents/${doc.id}`);
+    
+    // Auto-expand the module so the user sees the newly created document
+    setCollapsedCategories(prev => ({ ...prev, [category]: false }));
+    
+    if (shouldRoute) {
+      const proj = projects.find(p => p.id === activeProjectId);
+      const sectionLabel = proj?.sections?.find(s => s.id === category)?.label || category;
+      router.push(pathname.startsWith('/docs') ? `/docs/${toSlug(sectionLabel)}/${toSlug(doc.title)}` : `/dashboard/documents/${doc.id}`);
+    }
   };
 
   const startRename = (doc: Doc) => {
@@ -282,25 +289,21 @@ export default function Sidebar({
           "fixed lg:static inset-y-0 left-0 z-60 h-screen border-r border-sidebar-border bg-sidebar flex flex-col text-sidebar-foreground select-none transition-transform duration-300 ease-in-out shadow-2xl lg:shadow-none",
           // Mobile: slide in/out; Desktop: always visible
           isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
-          isCollapsed && !isMobileOpen ? "w-20" : "w-72"
+          isCollapsed && !isMobileOpen ? "w-20" : "w-[340px]"
         )}
       >
         {/* Little Seeds Branding Header */}
         <div className="p-4 flex flex-col shrink-0 gap-3 border-b border-border/20">
           {!isCollapsed ? (
             <div className="flex items-center gap-3 px-1 py-1 w-full relative">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-inner bg-primary/10">
-                <span className="text-xl">{activeProject?.icon || '🌱'}</span>
+              <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-sm bg-white border border-border/40 overflow-hidden">
+                <img src="/ls-image.png" alt="Little Seeds Logo" className="w-full h-full object-contain p-1" />
               </div>
-              <div className="flex flex-col min-w-0 text-left flex-1">
-                <span className="font-black text-lg text-foreground tracking-tight truncate">Little Seeds</span>
-                {activeProject?.description ? (
-                  <span className="text-[10px] text-muted-foreground font-medium mt-0.5 line-clamp-2 leading-tight">
-                    {activeProject.description}
-                  </span>
-                ) : (
-                  isAdmin && <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-widest leading-none mt-1">Docs Admin</span>
-                )}
+              <div className="flex flex-col min-w-0 text-left flex-1 justify-center">
+                <span className="font-black text-lg text-foreground tracking-tight truncate leading-none">Little Seeds</span>
+                <span className="text-[11px] text-muted-foreground font-bold mt-1 line-clamp-1 leading-tight tracking-wide">
+                  Rooted in Faith
+                </span>
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 {/* Close button — visible only on mobile */}
@@ -314,8 +317,8 @@ export default function Sidebar({
               </div>
             </div>
           ) : (
-            <div className="w-10 h-10 bg-primary/10 text-primary rounded-xl flex items-center justify-center shadow-inner mx-auto cursor-pointer font-outfit font-black text-xl" onClick={() => setIsCollapsed(false)}>
-              {activeProject?.icon || '🌱'}
+            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm border border-border/40 mx-auto cursor-pointer overflow-hidden" onClick={() => setIsCollapsed(false)}>
+              <img src="/ls-image.png" alt="Logo" className="w-full h-full object-contain p-1" />
             </div>
           )}
         </div>
@@ -351,8 +354,8 @@ export default function Sidebar({
                       const proj = activeProject || allowedProjects[0];
                       if (proj) handleOpenSectionsConfig(proj);
                     }}
-                    className="p-1 hover:bg-primary/10 bg-card border border-border shadow-xs rounded-md text-primary transition-all cursor-pointer"
-                    title="Configure Modules"
+                    className="w-6 h-6 flex items-center justify-center bg-card hover:bg-primary/10 border border-border/60 hover:border-primary/30 shadow-sm rounded-lg text-muted-foreground hover:text-primary transition-all cursor-pointer"
+                    title="Add Module"
                   >
                     <Plus className="w-3.5 h-3.5" />
                   </button>
@@ -453,7 +456,7 @@ export default function Sidebar({
                                           }
                                           handleNewDoc(role);
                                         }}
-                                        className="p-0.5 hover:bg-accent rounded text-primary transition-all cursor-pointer"
+                                        className="w-5 h-5 flex items-center justify-center bg-primary/10 hover:bg-primary rounded-md text-primary hover:text-primary-foreground transition-all cursor-pointer shadow-sm"
                                         title="Add manual"
                                       >
                                         <Plus className="w-3 h-3" />
@@ -515,12 +518,12 @@ export default function Sidebar({
                                       renamingId={renamingId} renameVal={renameVal}
                                       setRenameVal={setRenameVal} commitRename={commitRename}
                                       onDeleteDocument={handleDeleteDocClick} togglePin={togglePin}
-                                      toggleFavorite={toggleFavorite} handleSelect={() => {
-                                        setActiveDoc(doc.id);
+                                      toggleFavorite={toggleFavorite} onSelectDoc={(selectedDoc) => {
+                                        setActiveDoc(selectedDoc.id);
                                         setIsMobileOpen(false);
-                                        router.push(pathname.startsWith('/docs') ? `/docs/${toSlug(meta.label)}/${toSlug(doc.title)}` : `/dashboard/documents/${doc.id}`);
+                                        router.push(pathname.startsWith('/docs') ? `/docs/${toSlug(meta.label)}/${toSlug(selectedDoc.title)}` : `/dashboard/documents/${selectedDoc.id}`);
                                       }}
-                                      handleNewSubDoc={() => handleNewDoc(role, doc.id)}
+                                      onNewDoc={handleNewDoc}
                                     />
                                   ))}
 
@@ -542,6 +545,21 @@ export default function Sidebar({
                                         </button>
                                       )}
                                     </div>
+                                  )}
+
+                                  {/* Inline Add Page at bottom of module */}
+                                  {rootDocs.length > 0 && isAdmin && !isPublicDocsPage && (
+                                    <button
+                                      onClick={() => {
+                                        if (project.id !== activeProjectId) {
+                                          setActiveProject(project.id);
+                                        }
+                                        handleNewDoc(role);
+                                      }}
+                                      className="mt-2 mb-1 ml-3 text-[10px] font-bold uppercase tracking-wider text-muted-foreground hover:bg-primary/5 hover:text-primary px-2 py-1.5 rounded-lg border border-transparent hover:border-primary/20 transition-all flex items-center gap-1.5 cursor-pointer w-fit"
+                                    >
+                                      <Plus className="w-3.5 h-3.5" /> Add Docs
+                                    </button>
                                   )}
                                 </div>
                               )}
@@ -618,71 +636,84 @@ export default function Sidebar({
       {/* Sections Config Overlay Modal */}
       {isSectionsConfigOpen && selectedProjectForConfig && (
         <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 backdrop-blur-md p-3 sm:p-4 select-none animate-in fade-in zoom-in-95 duration-200">
-          <div className="bg-card border border-border/80 rounded-3xl w-full max-w-md max-h-[90vh] flex flex-col shadow-2xl relative overflow-hidden ring-1 ring-border/50">
+          <div className="bg-card border-border/40 rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl relative overflow-hidden ring-1 ring-border/50">
             
             {/* Modal Header */}
-            <div className="p-5 sm:p-6 pb-2 shrink-0 relative z-10 bg-card">
+            <div className="p-6 sm:p-8 pb-4 shrink-0 relative z-10 bg-gradient-to-b from-slate-50/80 to-card dark:from-slate-900/80 dark:to-card border-b border-border/40">
               <button
                 onClick={() => {
                   setIsSectionsConfigOpen(false);
                   setSelectedProjectForConfig(null);
                 }}
-                className="absolute right-4 top-4 text-muted-foreground hover:bg-accent p-1.5 rounded-full transition-colors cursor-pointer"
+                className="absolute right-5 top-5 text-muted-foreground hover:bg-slate-200 dark:hover:bg-slate-800 p-2 rounded-full transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
-              <h3 className="text-xl font-black text-foreground font-outfit uppercase tracking-tight">Configure Modules</h3>
-              <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-widest mt-1 pr-6 leading-relaxed">
-                Manage workspace sections for <span className="text-foreground">{selectedProjectForConfig.name}</span>
-              </p>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center border border-primary/20 shadow-inner">
+                  <Layout className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-slate-900 dark:text-slate-100 font-outfit uppercase tracking-tight">Create & Manage Modules</h3>
+                  <p className="text-[10px] sm:text-[11px] text-slate-500 font-bold uppercase tracking-widest mt-0.5 leading-relaxed">
+                    Organize your workspace directories
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Modal Body */}
-            <form onSubmit={handleSaveConfigSections} className="p-5 sm:p-6 pt-3 flex flex-col gap-5 overflow-hidden">
+            <form onSubmit={handleSaveConfigSections} className="p-6 pt-5 flex flex-col gap-6 overflow-hidden bg-slate-50/30 dark:bg-slate-900/30">
               
               {/* Sections Container */}
-              <div className="bg-accent/10 border border-border rounded-2xl flex flex-col shadow-inner overflow-hidden">
+              <div className="flex flex-col overflow-hidden h-full">
                 
-                {/* Sections List Header (Sticky) */}
-                <div className="flex items-center justify-between p-3.5 sm:p-4 border-b border-border/60 bg-accent/40 shrink-0">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Custom Sections</span>
+                {/* Sections List Header */}
+                <div className="flex items-center justify-between pb-3 shrink-0">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Directory Configuration</span>
                   <button
                     type="button"
                     onClick={handleAddConfigCustomSection}
-                    className="text-[10px] font-black uppercase tracking-wider text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5 cursor-pointer bg-primary/10 hover:bg-primary/20 px-2.5 py-1.5 rounded-lg"
+                    className="text-[10px] font-black uppercase tracking-wider text-primary hover:text-primary-foreground transition-all flex items-center gap-1.5 cursor-pointer bg-primary/10 hover:bg-primary px-3 py-1.5 rounded-lg shadow-sm"
                   >
-                    <Plus className="w-3 h-3" /> Add Section
+                    <Plus className="w-3 h-3" /> New Module
                   </button>
                 </div>
 
                 {/* Sections List Scrollable Area */}
-                <div className="p-3.5 sm:p-4 overflow-y-auto scrollbar-thin space-y-3.5 max-h-[45vh] sm:max-h-[350px]">
+                <div className="overflow-y-auto scrollbar-thin space-y-3 max-h-[45vh] sm:max-h-[380px] pr-1 pb-2">
                   {configCustomSections.map((section, idx) => (
-                    <div key={section.id} className="flex flex-col gap-3 bg-card border border-border/80 p-3.5 rounded-xl hover:border-primary/40 shadow-xs hover:shadow-md transition-all group/item">
-                      <div className="relative w-full">
+                    <div key={section.id} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0 p-2 bg-card border border-border/60 rounded-2xl hover:border-primary/50 shadow-xs hover:shadow-sm transition-all group/item focus-within:ring-1 focus-within:ring-primary/30">
+                      
+                      {/* Icon Selector */}
+                      <div className="w-full sm:w-[220px] shrink-0">
                         <Select
                           value={section.icon}
                           onChange={val => handleUpdateConfigSectionIcon(section.id, val)}
                           options={getSectionIconSelectOptions()}
                           className="w-full"
-                          triggerClassName="h-10 px-3 rounded-lg bg-accent/30 border-border/60 hover:border-border transition-colors text-sm font-semibold"
+                          triggerClassName="h-10 px-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-border/40 hover:border-primary/30 transition-colors text-xs font-bold text-slate-600 dark:text-slate-300 focus:ring-0 shadow-none"
                         />
                       </div>
 
-                      <div className="flex w-full items-center gap-2.5">
+                      {/* Divider for desktop */}
+                      <div className="hidden sm:block w-px h-6 bg-border/40 mx-2" />
+
+                      {/* Name Input & Action */}
+                      <div className="flex flex-1 items-center gap-2 min-w-0">
                         <input
                           type="text"
                           required
                           value={section.label}
                           onChange={e => handleUpdateConfigSectionLabel(section.id, e.target.value)}
-                          placeholder={`Section ${idx + 1} name...`}
-                          className="flex-1 min-w-0 bg-background border border-border/80 hover:border-border focus:border-primary/40 focus:bg-background rounded-lg px-3.5 h-10 text-sm font-bold text-foreground focus:outline-none transition-all placeholder:text-muted-foreground/40 shadow-inner"
+                          placeholder={`Enter module name...`}
+                          className="flex-1 min-w-0 bg-transparent border-0 h-10 text-sm font-bold text-foreground focus:outline-none focus:ring-0 transition-all placeholder:text-muted-foreground/50 px-2"
                         />
                         <button
                           type="button"
                           onClick={() => handleRemoveConfigCustomSection(section.id)}
-                          className="bg-rose-500/10 hover:bg-rose-500/20 rounded-lg text-rose-500 hover:text-rose-600 transition-colors shrink-0 cursor-pointer flex items-center justify-center h-10 w-10 shadow-xs"
-                          title="Remove custom section"
+                          className="bg-rose-500/10 hover:bg-rose-500 text-rose-500 hover:text-white rounded-xl transition-colors shrink-0 cursor-pointer flex items-center justify-center h-10 w-10"
+                          title="Delete module"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -692,37 +723,38 @@ export default function Sidebar({
                   
                   {/* Empty State */}
                   {configCustomSections.length === 0 && (
-                    <div className="py-8 sm:py-10 text-center bg-card rounded-xl border border-dashed border-border/60 flex flex-col items-center justify-center gap-2">
-                      <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center mb-1">
-                        <BookOpen className="w-5 h-5 text-muted-foreground" />
+                    <div className="py-10 text-center bg-card rounded-2xl border border-dashed border-border/60 flex flex-col items-center justify-center gap-3">
+                      <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center border border-border/40 shadow-inner">
+                        <Layout className="w-6 h-6 text-slate-400" />
                       </div>
-                      <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">No custom sections</p>
-                      <p className="text-[10px] font-bold text-muted-foreground/70">Click Add Section above to create one.</p>
+                      <div>
+                        <p className="text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-widest">No Modules Found</p>
+                        <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-wider">Create a module to start organizing manuals</p>
+                      </div>
                     </div>
                   )}
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3 pt-1 shrink-0">
+              <div className="flex flex-col sm:flex-row gap-3 pt-4 shrink-0 border-t border-border/40 mt-2">
                 <button
                   type="button"
                   onClick={() => {
                     setIsSectionsConfigOpen(false);
                     setSelectedProjectForConfig(null);
                   }}
-                  className="flex-1 h-12 rounded-xl border border-border/80 text-xs font-bold text-foreground/80 hover:text-foreground hover:bg-accent transition-all cursor-pointer shadow-xs"
+                  className="flex-1 h-12 rounded-xl border border-border/80 text-xs font-extrabold text-muted-foreground hover:text-foreground hover:bg-accent transition-all cursor-pointer shadow-xs uppercase tracking-wider"
                 >
-                  Cancel
+                  Discard Changes
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 h-12 bg-primary text-primary-foreground hover:bg-primary/95 rounded-xl text-xs font-black uppercase tracking-wider shadow-lg shadow-primary/20 transition-all cursor-pointer"
+                  className="flex-1 h-12 bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary/20 transition-all cursor-pointer"
                 >
-                  Save Configuration
+                  Save Workspace
                 </button>
               </div>
-
             </form>
           </div>
         </div>
@@ -831,16 +863,17 @@ interface DocLinkProps {
   setRenameVal: (v: string) => void; commitRename: () => void;
   onDeleteDocument: (id: string, title: string) => void; togglePin: (id: string) => void;
   toggleFavorite: (id: string) => void; onRename: (doc: Doc) => void;
-  handleSelect: () => void; handleNewSubDoc: () => void;
+  onSelectDoc: (doc: Doc) => void; onNewDoc: (category: string, parentId?: string) => void;
   level?: number;
 }
 
 function DocLinkItem({
   doc, activeDocId, isAdmin, activeStyles, allDocs, renamingId, renameVal,
   setRenameVal, commitRename, onDeleteDocument, togglePin, toggleFavorite, onRename,
-  handleSelect, handleNewSubDoc, level = 0
+  onSelectDoc, onNewDoc, level = 0
 }: DocLinkProps) {
   const [showMenu, setShowMenu] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const pathname = usePathname() || '';
   const active = doc.id === activeDocId;
   const isRenaming = renamingId === doc.id;
@@ -860,7 +893,10 @@ function DocLinkItem({
             : `text-sidebar-foreground/60 hover:text-sidebar-foreground ${pathname.startsWith('/docs') ? '' : 'hover:bg-sidebar-accent'}`
         )}
         style={{ paddingLeft: `${10 + level * 12}px` }}
-        onClick={handleSelect}
+        onClick={() => {
+          onSelectDoc(doc);
+          if (hasChildren) setIsExpanded(!isExpanded);
+        }}
       >
         {isRenaming ? (
           <input
@@ -873,20 +909,33 @@ function DocLinkItem({
             className="flex-1 bg-transparent border-b border-primary/50 text-sm font-bold focus:outline-none min-w-0 py-0.5 text-foreground"
           />
         ) : (
-          <div className="flex items-center gap-2 flex-1 min-w-0">
+          <div className="flex items-center gap-1.5 flex-1 min-w-0">
+            {hasChildren ? (
+              <button 
+                onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }}
+                className="p-0.5 hover:bg-accent rounded-sm text-muted-foreground transition-all cursor-pointer -ml-1 shrink-0"
+              >
+                <ChevronRight className={cn("w-3.5 h-3.5 transition-transform duration-200", isExpanded ? "rotate-90" : "")} />
+              </button>
+            ) : (
+              <div className="w-[18px] shrink-0 -ml-1" />
+            )}
             {doc.emoji ? (
               <span className="text-sm shrink-0 select-none">{doc.emoji}</span>
             ) : (
               <FileText className="w-3.5 h-3.5 shrink-0 text-muted-foreground/60 group-hover:text-sidebar-foreground transition-colors" />
             )}
-            <span className="flex-1 truncate select-none text-sm">{doc.title}</span>
+            <span className="flex-1 truncate select-none text-sm ml-0.5">{doc.title}</span>
           </div>
         )}
 
-        {!isRenaming && isAdmin && (
+        {!isRenaming && isAdmin && !pathname.startsWith('/docs') && (
           <div className="opacity-0 group-hover:opacity-100 flex items-center gap-0.5 ml-2 shrink-0" onClick={e => e.stopPropagation()}>
-            <button onClick={() => setShowMenu(o => !o)} className="p-0.5 hover:bg-accent rounded text-muted-foreground hover:text-foreground transition-all">
-              <MoreVertical className="w-3 h-3" />
+            <button onClick={() => { onNewDoc(doc.category, doc.id); setIsExpanded(true); }} className="w-5 h-5 flex items-center justify-center bg-primary/10 hover:bg-primary rounded-md text-primary hover:text-primary-foreground transition-all cursor-pointer shadow-sm" title="Add Sub-manual">
+              <Plus className="w-3 h-3" />
+            </button>
+            <button onClick={() => setShowMenu(o => !o)} className="p-0.5 hover:bg-accent rounded text-muted-foreground hover:text-foreground transition-all cursor-pointer" title="More Options">
+              <MoreVertical className="w-3.5 h-3.5" />
             </button>
 
             {showMenu && (
@@ -896,12 +945,7 @@ function DocLinkItem({
                   <button onClick={() => { onRename(doc); setShowMenu(false); }} className="flex items-center gap-2 w-full text-left px-3 py-1.5 text-[10px] font-bold hover:bg-accent text-foreground transition-all">
                     <Edit3 className="w-3 h-3" /> Rename
                   </button>
-                  <button onClick={() => { togglePin(doc.id); setShowMenu(false); }} className="flex items-center gap-2 w-full text-left px-3 py-1.5 text-[10px] font-bold hover:bg-accent text-foreground transition-all">
-                    <Pin className="w-3 h-3 rotate-45" /> {doc.isPinned ? 'Unpin' : 'Pin'}
-                  </button>
-                  <button onClick={() => { toggleFavorite(doc.id); setShowMenu(false); }} className="flex items-center gap-2 w-full text-left px-3 py-1.5 text-[10px] font-bold hover:bg-accent text-foreground transition-all">
-                    <Star className="w-3 h-3" /> {doc.isFavorite ? 'Unfavorite' : 'Favorite'}
-                  </button>
+                  {/* Pin and Favorite removed as per request */}
                   <div className="border-t border-border/30 mt-1 pt-1">
                     <button onClick={() => { onDeleteDocument(doc.id, doc.title); setShowMenu(false); }} className="flex items-center gap-2 w-full text-left px-3 py-1.5 text-[10px] font-bold hover:bg-rose-500/10 text-rose-500">
                       <Trash2 className="w-3 h-3" /> Delete
@@ -914,8 +958,8 @@ function DocLinkItem({
         )}
       </div>
 
-      {hasChildren && (
-        <div className="space-y-0.5">
+      {hasChildren && isExpanded && (
+        <div className="space-y-0.5 animate-in fade-in slide-in-from-top-1 duration-200">
           {childDocs.map(child => (
             <DocLinkItem
               key={child.id} doc={child} activeDocId={activeDocId}
@@ -924,10 +968,8 @@ function DocLinkItem({
               renamingId={renamingId} renameVal={renameVal}
               setRenameVal={setRenameVal} commitRename={commitRename}
               onDeleteDocument={onDeleteDocument} togglePin={togglePin}
-              toggleFavorite={toggleFavorite} handleSelect={() => {
-                handleSelect();
-              }}
-              handleNewSubDoc={handleNewSubDoc}
+              toggleFavorite={toggleFavorite} onSelectDoc={onSelectDoc}
+              onNewDoc={onNewDoc}
               level={level + 1}
             />
           ))}
