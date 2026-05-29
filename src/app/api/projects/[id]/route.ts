@@ -6,7 +6,7 @@ import Document from '@/models/Document';
 // PUT update a project by custom ID
 export async function PUT(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: any }
 ) {
   try {
     await connectToDatabase();
@@ -47,7 +47,7 @@ export async function PUT(
 // DELETE a project by custom ID
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: any }
 ) {
   try {
     await connectToDatabase();

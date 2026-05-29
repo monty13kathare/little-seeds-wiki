@@ -4,12 +4,12 @@ import { jwtVerify } from 'jose';
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-super-secret-production-key-here-12345";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // Extract path
   const path = request.nextUrl.pathname;
 
-  // Paths that require authentication and admin role (e.g. /dashboard or other protected routes)
-  const isProtectedPath = path.startsWith('/dashboard') || path.startsWith('/docs'); // Assuming docs and dashboard are protected
+  // Paths that require authentication and admin role
+  const isProtectedPath = path.startsWith('/dashboard'); // /docs is public
 
   if (isProtectedPath) {
     const token = request.cookies.get('auth_token')?.value;

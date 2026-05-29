@@ -133,7 +133,7 @@ export default function LoginPage() {
             >
               <div className="relative">
                 <div className="absolute inset-0 rounded-[4rem] blur-3xl" style={{ background: 'linear-gradient(to bottom right, var(--accent-primary), transparent)', opacity: 0.2 }}></div>
-                <div className="relative w-48 h-48 bg-gradient-to-br from-white to-slate-50 rounded-[3rem] flex items-center justify-center shadow-2xl border-2 p-6 overflow-hidden" style={{ borderColor: 'var(--accent-primary)', borderOpacity: 0.1 }}>
+                <div className="relative w-48 h-48 bg-gradient-to-br from-white to-slate-50 rounded-[3rem] flex items-center justify-center shadow-2xl border-2 p-6 overflow-hidden" style={{ borderColor: 'var(--accent-primary)' }}>
                   <img src="/ls-image.png" className="w-full h-full object-contain" alt="Little Seeds Logo" />
                 </div>
               </div>
@@ -172,7 +172,7 @@ export default function LoginPage() {
             >
               <div className="relative">
                 <div className="absolute inset-0 rounded-3xl blur-2xl" style={{ background: 'linear-gradient(to bottom right, var(--accent-primary), transparent)', opacity: 0.2 }}></div>
-                <div className="relative w-32 h-32 bg-gradient-to-br from-white to-slate-50 rounded-3xl flex items-center justify-center shadow-xl border-2 p-4 overflow-hidden" style={{ borderColor: 'var(--accent-primary)', borderOpacity: 0.1 }}>
+                <div className="relative w-32 h-32 bg-gradient-to-br from-white to-slate-50 rounded-3xl flex items-center justify-center shadow-xl border-2 p-4 overflow-hidden" style={{ borderColor: 'var(--accent-primary)' }}>
                   <img src="/ls-image.png" className="w-full h-full object-contain" alt="Little Seeds Logo" />
                 </div>
               </div>

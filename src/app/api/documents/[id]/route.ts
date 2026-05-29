@@ -5,7 +5,7 @@ import Document from '@/models/Document';
 // PUT update a document by custom ID
 export async function PUT(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: any }
 ) {
   try {
     await connectToDatabase();
@@ -31,7 +31,7 @@ export async function PUT(
 // DELETE a document and recursively clean up all nested sub-documents (recursive tree safety)
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: any }
 ) {
   try {
     await connectToDatabase();
